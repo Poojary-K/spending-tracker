@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { ExpenseService } from '../../services/expense.service';
-import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../shared.module';
 import { ExpenseListComponent } from '../expense-list/expense-list.component';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   templateUrl: './dashboard.component.html',
-  imports: [CommonModule, ExpenseListComponent, FormsModule]
+  imports: [SharedModule, ExpenseListComponent]
 })
 export class DashboardComponent {
   months: string[] = [];
@@ -30,6 +29,17 @@ export class DashboardComponent {
 
     // Select current month
     this.selectedMonth = currentMonth;
+  }
+
+  /**
+   * Converts a YYYY-MM string to a readable month name (e.g., 'June 2024').
+   */
+  getMonthName(ym: string): string {
+    if (!ym) return '';
+    const [year, month] = ym.split('-').map(Number);
+    if (!year || !month) return ym;
+    const date = new Date(year, month - 1);
+    return date.toLocaleString('default', { month: 'long', year: 'numeric' });
   }
 
   total(month: string): number {

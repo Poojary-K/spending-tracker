@@ -1,59 +1,45 @@
-# SpendingTracker
+# �� Spending Tracker
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.0.
+> _This is a time-pass project I built because I wanted something like this for myself... but couldn’t find anything that fit!_
 
-## Development server
+Welcome to **Spending Tracker** – your chill, modern, and mobile-friendly way to keep tabs on your expenses! 😎💸
 
-To start a local development server, run:
+## 🚀 Features
 
-```bash
-ng serve
-```
+- **Dark & Light Mode** – Switch themes anytime, your eyes will thank you!
+- **Mobile-First & Responsive** – Looks great on your phone, tablet, or desktop.
+- **Sidebar Navigation** – Jump between Dashboard, Add Expense, and Data Import/Export with ease.
+- **Smart Category Memory** – Categories you use are remembered and suggested next time.
+- **Import/Export Data** – Backup or move your data with a click.
+- **Real-Time Updates** – No more page refreshes, everything updates instantly.
+- **Prominent Totals** – See your total spend for the month, front and center.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🛠️ Getting Started
 
-## Code scaffolding
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+2. **Run the app locally:**
+   ```bash
+   npm start
+   ```
+3. **Open in your browser:**
+   [http://localhost:4200](http://localhost:4200)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 📝 Usage Tips
 
-```bash
-ng generate component component-name
-```
+- **Add Expenses:** Use the sidebar to add new expenses. Categories you use are saved for next time!
+- **Dashboard:** See your monthly totals and all your expenses, grouped by category.
+- **Switch Theme:** Use the sun/moon button in the top bar to toggle dark/light mode.
+- **Import/Export:** Use the Data Import/Export page to backup or restore your data.
+- **Mobile?** No problem! The sidebar collapses and the UI adapts for small screens.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 💡 Tech Stack
+- Angular 20+
+- Bootstrap 5
+- RxJS
 
-```bash
-ng generate --help
-```
+## 👨‍🍳 Made with care by a chill dev (and a little help from AI)!
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Enjoy tracking your spending – and don’t forget to treat yourself once in a while! 🍦

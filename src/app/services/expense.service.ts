@@ -1,14 +1,37 @@
 import { Injectable } from '@angular/core';
 import { Expense, ExpenseData } from '../models/expense.model';
+import { BehaviorSubject } from 'rxjs';
 
 const STORAGE_KEY = 'spending-tracker';
+const CATEGORY_KEY = 'spending-tracker-categories';
 
+/**
+ * ExpenseService manages all expense data and emits real-time updates
+ * using an RxJS BehaviorSubject. Components can subscribe to changes$.
+ */
 @Injectable({ providedIn: 'root' })
 export class ExpenseService {
   private data: ExpenseData;
 
+  /**
+   * Emits the current ExpenseData for real-time updates.
+   */
+  private data$ = new BehaviorSubject<ExpenseData>(this.load());
+
+  /**
+   * List of known categories, loaded from localStorage.
+   */
+  private categories: string[] = this.loadCategories();
+
   constructor() {
-    this.data = this.load();
+    this.data = this.data$.value;
+  }
+
+  /**
+   * Observable for components to subscribe to expense data changes.
+   */
+  get changes$() {
+    return this.data$.asObservable();
   }
 
   private load(): ExpenseData {
@@ -18,8 +41,9 @@ export class ExpenseService {
       : { userId: 'default', months: {} };
   }
 
-  private save(): void {
+  private saveAndEmit(): void {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
+    this.data$.next(this.data);
   }
 
   getExpenses(month: string): Expense[] {
@@ -36,7 +60,8 @@ export class ExpenseService {
       this.data.months[month] = { expenses: [] };
     }
     this.data.months[month].expenses.push(expense);
-    this.save();
+    this.addCategory(expense.category); // Remember category
+    this.saveAndEmit();
   }
 
   updateExpense(updated: Expense): void {
@@ -53,7 +78,7 @@ export class ExpenseService {
 
     if (index !== -1) {
       monthly.expenses[index] = { ...updated };
-      this.save();
+      this.saveAndEmit();
     }
   }
 
@@ -76,7 +101,7 @@ export class ExpenseService {
       delete this.data.months[month];
     }
 
-    this.save();
+    this.saveAndEmit();
   }
 
   exportData(): string {
@@ -85,6 +110,33 @@ export class ExpenseService {
 
   importData(json: string): void {
     this.data = JSON.parse(json);
-    this.save();
+    this.saveAndEmit();
+  }
+
+  /**
+   * Get all known categories (for dropdown).
+   */
+  getCategories(): string[] {
+    return [...this.categories];
+  }
+
+  /**
+   * Add a new category if not already present, and persist.
+   */
+  addCategory(category: string) {
+    const cat = category.trim();
+    if (cat && !this.categories.includes(cat)) {
+      this.categories.push(cat);
+      this.saveCategories();
+    }
+  }
+
+  private loadCategories(): string[] {
+    const raw = localStorage.getItem(CATEGORY_KEY);
+    return raw ? JSON.parse(raw) : [];
+  }
+
+  private saveCategories() {
+    localStorage.setItem(CATEGORY_KEY, JSON.stringify(this.categories));
   }
 }

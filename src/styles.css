@@ -1,1 +1,133 @@
-/* You can add global styles to this file, and also import other style files */
+/* Theme variables for light and dark mode */
+:root {
+  --background: #fff;
+  --foreground: #212529;
+  --primary: #0d6efd;
+  --secondary: #6c757d;
+  --border: #dee2e6;
+  --placeholder: #6c757d;
+}
+
+body.light-mode {
+  --background: #fff;
+  --foreground: #212529;
+  --primary: #0d6efd;
+  --secondary: #6c757d;
+  --border: #dee2e6;
+  --placeholder: #6c757d;
+  background: var(--background);
+  color: var(--foreground);
+  transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+  --background: #181a1b;
+  --foreground: #f8f9fa;
+  --primary: #66b2ff;
+  --secondary: #adb5bd;
+  --border: #343a40;
+  --placeholder: #adb5bd;
+  background: var(--background);
+  color: var(--foreground);
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Placeholder color for all inputs and textareas */
+input::placeholder,
+textarea::placeholder {
+  color: var(--placeholder) !important;
+  opacity: 1;
+}
+
+/* Apply variables to Bootstrap classes, but do NOT override contextual button/icon colors */
+body, .container {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+.form-control, .form-select {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border) !important;
+}
+
+.table, .table-bordered {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border) !important;
+}
+
+.table th, .table td {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+hr, .border-bottom {
+  border-color: var(--border) !important;
+}
+
+/* Do NOT override Bootstrap's contextual button/icon colors */
+.btn-outline-primary, .btn-outline-danger {
+  color: inherit !important;
+  border-color: inherit !important;
+}
+
+.btn-outline-primary .bi, .btn-outline-danger .bi {
+  color: inherit !important;
+}
+
+/* Restore Bootstrap's default for outline-primary and outline-danger */
+.btn-outline-primary {
+  color: #0d6efd !important;
+  border-color: #0d6efd !important;
+}
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+  background-color: #0d6efd !important;
+  color: #fff !important;
+}
+.btn-outline-danger {
+  color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+.btn-outline-danger:hover, .btn-outline-danger:focus {
+  background-color: #dc3545 !important;
+  color: #fff !important;
+}
+
+.btn-outline-primary .bi {
+  color: #0d6efd !important;
+}
+.btn-outline-danger .bi {
+  color: #dc3545 !important;
+}
+
+/* Theme-aware style for expense total row in expense list */
+.expense-total-row {
+  background-color: rgba(0,0,0,0.05); /* fallback for light */
+  background-color: var(--border);
+  color: var(--foreground) !important;
+}
+body.dark-mode .expense-total-row {
+  background-color: #23272b !important;
+  color: var(--foreground) !important;
+}
+
+@media (max-width: 576px) {
+  h1, h3, h5, h6 {
+    font-size: 1.25rem !important;
+  }
+  .btn, .form-control, .form-select {
+    font-size: 1rem !important;
+    min-height: 2.5rem !important;
+  }
+  .table {
+    font-size: 0.95rem !important;
+  }
+  .container {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+  .mb-2 {
+    margin-bottom: 0.75rem !important;
+  }
+}

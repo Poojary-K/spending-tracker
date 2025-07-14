@@ -3,52 +3,54 @@
 <div *ngIf="getCategories().length > 0; else noData">
   <div *ngFor="let category of getCategories()" class="mb-4">
     <h6 class="text-primary border-bottom">{{ capitalize(category) }}</h6>
-    <table class="table table-sm table-bordered">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Description</th>
-          <th>Amount (₹)</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let e of groupedExpenses[category]">
-          <!-- View mode -->
-          <td *ngIf="editing !== e">{{ formatDate(e.date) }}</td>
-          <td *ngIf="editing !== e">{{ e.description }}</td>
-          <td *ngIf="editing !== e">₹{{ e.amount }}</td>
-          <td *ngIf="editing !== e">
-            <button class="btn btn-sm btn-outline-primary me-1" (click)="startEdit(e)">
-              <i class="bi bi-pencil-square"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-danger" (click)="confirmDelete(e)">
-              <i class="bi bi-trash"></i>
-            </button>
-          </td>
-
-          <!-- Edit mode -->
-          <ng-container *ngIf="editing === e">
-            <td><input [(ngModel)]="e.date" type="date" class="form-control form-control-sm" /></td>
-            <td><input [(ngModel)]="e.description" type="text" class="form-control form-control-sm" /></td>
-            <td><input [(ngModel)]="e.amount" type="number" class="form-control form-control-sm" /></td>
-            <td>
-              <button class="btn btn-sm btn-success me-1" (click)="saveEdit()">
-                <i class="bi bi-check-circle"></i>
+    <div class="table-responsive">
+      <table class="table table-sm table-bordered">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount (₹)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let e of groupedExpenses[category]">
+            <!-- View mode -->
+            <td *ngIf="editing !== e">{{ formatDate(e.date) }}</td>
+            <td *ngIf="editing !== e">{{ e.description }}</td>
+            <td *ngIf="editing !== e">₹{{ e.amount }}</td>
+            <td *ngIf="editing !== e">
+              <button class="btn btn-sm btn-outline-primary me-1" (click)="startEdit(e)">
+                <i class="bi bi-pencil-square"></i>
               </button>
-              <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">
-                <i class="bi bi-x-circle"></i>
+              <button class="btn btn-sm btn-outline-danger" (click)="confirmDelete(e)">
+                <i class="bi bi-trash"></i>
               </button>
             </td>
-          </ng-container>
-        </tr>
 
-        <tr class="table-secondary fw-bold">
-          <td colspan="3">Total</td>
-          <td>₹{{ getCategoryTotal(category) }}</td>
-        </tr>
-      </tbody>
-    </table>
+            <!-- Edit mode -->
+            <ng-container *ngIf="editing === e">
+              <td><input [(ngModel)]="e.date" type="date" class="form-control form-control-sm" /></td>
+              <td><input [(ngModel)]="e.description" type="text" class="form-control form-control-sm" /></td>
+              <td><input [(ngModel)]="e.amount" type="number" class="form-control form-control-sm" /></td>
+              <td>
+                <button class="btn btn-sm btn-success me-1" (click)="saveEdit()">
+                  <i class="bi bi-check-circle"></i>
+                </button>
+                <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">
+                  <i class="bi bi-x-circle"></i>
+                </button>
+              </td>
+            </ng-container>
+          </tr>
+
+          <tr class="expense-total-row fw-bold">
+            <td colspan="3">Total</td>
+            <td>₹{{ getCategoryTotal(category) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 

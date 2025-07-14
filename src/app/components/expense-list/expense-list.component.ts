@@ -1,31 +1,45 @@
-import { Component, Input, OnChanges } from '@angular/core';
+/**
+ * ExpenseListComponent subscribes to ExpenseService.changes$ for real-time updates.
+ * No manual refresh is needed after add/edit/delete/import.
+ */
+import { Component, Input, OnChanges, OnInit, OnDestroy } from '@angular/core';
 import { ExpenseService } from '../../services/expense.service';
 import { Expense } from '../../models/expense.model';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { SharedModule } from '../../shared.module';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-expense-list',
   standalone: true,
   templateUrl: './expense-list.component.html',
-  imports: [CommonModule, FormsModule]
+  imports: [SharedModule]
 })
-export class ExpenseListComponent implements OnChanges {
+export class ExpenseListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() month = new Date().toISOString().slice(0, 7);
   groupedExpenses: { [category: string]: Expense[] } = {};
   editing: Expense | null = null;
   originalCopy: Expense | null = null;
+  private sub?: Subscription;
 
   constructor(public service: ExpenseService) {}
+
+  ngOnInit() {
+    // Subscribe to real-time changes
+    this.sub = this.service.changes$.subscribe(() => this.groupExpenses());
+    this.groupExpenses();
+  }
 
   ngOnChanges() {
     this.groupExpenses();
   }
 
+  ngOnDestroy() {
+    this.sub?.unsubscribe();
+  }
+
   groupExpenses() {
     const rawExpenses = this.service.getExpenses(this.month);
     this.groupedExpenses = {};
-
     for (const expense of rawExpenses) {
       const key = expense.category.trim().toLowerCase();
       if (!this.groupedExpenses[key]) {
@@ -69,12 +83,12 @@ export class ExpenseListComponent implements OnChanges {
     if (this.editing) {
       this.service.updateExpense(this.editing);
       this.editing = null;
-      this.groupExpenses();
+      // No need to call groupExpenses; will update via subscription
     }
   }
 
   confirmDelete(expense: Expense) {
-    const confirmMsg = `Are you sure you want to delete: ₹${expense.amount} for "${expense.description}" on ${this.formatDate(expense.date)}?`;
+    const confirmMsg = `Are you sure you want to delete: 9${expense.amount} for "${expense.description}" on ${this.formatDate(expense.date)}?`;
     if (confirm(confirmMsg)) {
       this.deleteExpense(expense);
     }
@@ -82,6 +96,6 @@ export class ExpenseListComponent implements OnChanges {
 
   deleteExpense(expense: Expense) {
     this.service.deleteExpense(expense);
-    this.groupExpenses();
+    // No need to call groupExpenses; will update via subscription
   }
 }
