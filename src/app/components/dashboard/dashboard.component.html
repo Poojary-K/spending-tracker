@@ -1,0 +1,22 @@
+<h3 class="mt-3">Dashboard</h3>
+<hr>
+<div class="mt-3 d-flex gap-2">
+  <button class="btn btn-sm btn-outline-secondary" (click)="exportData()">
+    Export Data
+  </button>
+
+  <input type="file" class="form-control form-control-sm" (change)="importData($event)" accept=".json" />
+</div>
+<hr>
+<div class="form-group">
+  <label>Select Month:</label>
+  <select class="form-select" [(ngModel)]="selectedMonth">
+    <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+  </select>
+</div>
+
+<div class="mt-3">
+  <strong>Total Spend:</strong> ₹{{ total(selectedMonth) }}
+</div>
+
+<app-expense-list [month]="selectedMonth"></app-expense-list>

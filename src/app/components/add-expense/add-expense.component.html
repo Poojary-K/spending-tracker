@@ -1,0 +1,47 @@
+<form #expenseForm="ngForm" (ngSubmit)="add()" class="row g-2">
+  <div class="col-md-3">
+    <input
+      type="date"
+      class="form-control"
+      [(ngModel)]="expense.date"
+      name="date"
+      required
+    />
+  </div>
+  <div class="col-md-2">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="expense.category"
+      name="category"
+      placeholder="Category"
+      required
+    />
+  </div>
+  <div class="col-md-3">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="expense.description"
+      name="description"
+      placeholder="Description"
+      required
+    />
+  </div>
+  <div class="col-md-2">
+    <input
+      type="number"
+      class="form-control"
+      [(ngModel)]="expense.amount"
+      name="amount"
+      placeholder="Amount"
+      required
+      min="0.01"
+    />
+  </div>
+  <div class="col-md-2">
+    <button class="btn btn-primary w-100" type="submit" [disabled]="!expenseForm.valid">
+      Add
+    </button>
+  </div>
+</form>
