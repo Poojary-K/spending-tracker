@@ -17,5 +17,9 @@ export const routes: Routes = [
   {
     path: 'data',
     loadComponent: () => import('./components/data-import-export.component').then(m => m.DataImportExportComponent)
+  },
+  {
+    path: 'split',
+    loadComponent: () => import('./components/split-calculator.component').then(m => m.SplitCalculatorComponent)
   }
 ]; 

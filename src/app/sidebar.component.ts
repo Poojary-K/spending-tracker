@@ -30,6 +30,11 @@ import { CommonModule } from '@angular/common';
               <i class="bi bi-upload me-2"></i> Data Import/Export
             </a>
           </li>
+          <li class="nav-item mb-2">
+            <a class="nav-link" routerLink="/split" routerLinkActive="active" (click)="close.emit()">
+              <i class="bi bi-people-fill me-2"></i> Split Calculator
+            </a>
+          </li>
         </ul>
       </div>
     </nav>
