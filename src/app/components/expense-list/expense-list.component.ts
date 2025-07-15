@@ -54,7 +54,7 @@ export class ExpenseListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   getCategoryTotal(category: string): number {
-    return this.groupedExpenses[category].reduce((sum, e) => sum + e.amount, 0);
+    return Math.round(this.groupedExpenses[category].reduce((sum, e) => sum + e.amount, 0) * 100) / 100;
   }
 
   capitalize(word: string): string {

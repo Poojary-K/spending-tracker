@@ -1,0 +1,18 @@
+.split-theme-box {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.split-theme-card {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+body.dark-mode .split-theme-box,
+body.dark-mode .split-theme-card {
+  background-color: #23272b !important;
+  color: var(--foreground) !important;
+  border: 1px solid var(--border) !important;
+} 

@@ -43,7 +43,7 @@ export class DashboardComponent {
   }
 
   total(month: string): number {
-    return this.service.getExpenses(month).reduce((sum, e) => sum + e.amount, 0);
+    return Math.round(this.service.getExpenses(month).reduce((sum, e) => sum + e.amount, 0) * 100) / 100;
   }
 
   exportData(): void {

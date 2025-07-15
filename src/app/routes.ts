@@ -16,10 +16,10 @@ export const routes: Routes = [
   },
   {
     path: 'data',
-    loadComponent: () => import('./components/data-import-export.component').then(m => m.DataImportExportComponent)
+    loadComponent: () => import('./components/data-import-export/data-import-export.component').then(m => m.DataImportExportComponent)
   },
   {
     path: 'split',
-    loadComponent: () => import('./components/split-calculator.component').then(m => m.SplitCalculatorComponent)
+    loadComponent: () => import('./components/split-calculator/split-calculator.component').then(m => m.SplitCalculatorComponent)
   }
 ]; 
