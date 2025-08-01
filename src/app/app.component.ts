@@ -4,7 +4,7 @@ import { SidebarComponent } from './sidebar.component';
 import { SharedModule } from './shared.module';
 import { WhatsNewDialogComponent } from './components/whats-new-dialog/whats-new-dialog.component';
 
-export const WHATS_NEW_VERSION = '1.1.0';
+export const WHATS_NEW_VERSION = '1.2.0';
 
 @Component({
   selector: 'app-root',

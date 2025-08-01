@@ -98,4 +98,29 @@ export class ExpenseListComponent implements OnInit, OnChanges, OnDestroy {
     this.service.deleteExpense(expense);
     // No need to call groupExpenses; will update via subscription
   }
+
+  /**
+   * Prompt user to rename a category.
+   */
+  renameCategoryPrompt(category: string) {
+    const displayName = this.capitalize(category);
+    const newName = prompt(`Rename category "${displayName}" to:`, displayName);
+    if (newName !== null) {
+      const trimmed = newName.trim();
+      if (trimmed && trimmed !== category) {
+        this.service.renameCategory(category, trimmed);
+      }
+    }
+  }
+
+  /**
+   * Prompt before deleting a category and its expenses.
+   */
+  confirmDeleteCategory(category: string) {
+    const displayName = this.capitalize(category);
+    const msg = `Deleting the category "${displayName}" will remove ALL expenses within this category.\nAre you sure you want to continue?`;
+    if (confirm(msg)) {
+      this.service.deleteCategory(category);
+    }
+  }
 }

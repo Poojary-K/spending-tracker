@@ -2,7 +2,15 @@
 
 <div *ngIf="getCategories().length > 0; else noData">
   <div *ngFor="let category of getCategories()" class="mb-4">
-    <h6 class="text-primary border-bottom">{{ capitalize(category) }}</h6>
+    <h6 class="text-primary border-bottom d-flex align-items-center">
+      <span class="flex-grow-1">{{ capitalize(category) }}</span>
+      <button class="btn btn-sm btn-outline-secondary me-1" (click)="renameCategoryPrompt(category)" title="Rename Category">
+        <i class="bi bi-pencil-square"></i>
+      </button>
+      <button class="btn btn-sm btn-outline-danger" (click)="confirmDeleteCategory(category)" title="Delete Category">
+        <i class="bi bi-trash"></i>
+      </button>
+    </h6>
     <div class="table-responsive">
       <table class="table table-sm table-bordered">
         <thead>

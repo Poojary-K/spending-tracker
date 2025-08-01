@@ -59,8 +59,12 @@ export class ExpenseService {
     if (!this.data.months[month]) {
       this.data.months[month] = { expenses: [] };
     }
-    this.data.months[month].expenses.push(expense);
-    this.addCategory(expense.category); // Remember category
+
+    // Normalize category capitalization before storing
+    const normalizedExpense = { ...expense, category: this.capitalize(expense.category) };
+
+    this.data.months[month].expenses.push(normalizedExpense);
+    this.addCategory(normalizedExpense.category); // Remember category
     this.saveAndEmit();
   }
 
@@ -77,7 +81,9 @@ export class ExpenseService {
     );
 
     if (index !== -1) {
-      monthly.expenses[index] = { ...updated };
+      const normalized = { ...updated, category: this.capitalize(updated.category) };
+      monthly.expenses[index] = normalized;
+      this.addCategory(normalized.category);
       this.saveAndEmit();
     }
   }
@@ -124,11 +130,76 @@ export class ExpenseService {
    * Add a new category if not already present, and persist.
    */
   addCategory(category: string) {
-    const cat = category.trim();
-    if (cat && !this.categories.includes(cat)) {
+    let cat = category.trim();
+    if (!cat) return;
+    cat = this.capitalize(cat);
+    if (!this.categories.some(c => c.trim().toLowerCase() === cat.toLowerCase())) {
       this.categories.push(cat);
       this.saveCategories();
     }
+  }
+
+  /**
+   * Rename an existing category across all expenses.
+   * Updates stored category list and expense entries, then emits changes.
+   */
+  /** Utility: capitalize first letter, rest lower. */
+  private capitalize(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+
+  renameCategory(oldName: string, newName: string): void {
+    const oldNorm = oldName.trim().toLowerCase();
+    let newKey = newName.trim();
+    if (!oldNorm || !newKey) return;
+
+    // Standardize new category's capitalization (same rule used in AddExpenseComponent)
+    newKey = this.capitalize(newKey);
+
+    // 1. Update categories inside each expense (case-insensitive match)
+    for (const month of Object.keys(this.data.months)) {
+      const monthly = this.data.months[month];
+      monthly.expenses.forEach(exp => {
+        if (exp.category.trim().toLowerCase() === oldNorm) {
+          exp.category = newKey;
+        }
+      });
+    }
+
+    // 2. Update stored categories list (remove old, ensure new present exactly once)
+    this.categories = this.categories
+      .filter(c => c.trim().toLowerCase() !== oldNorm)
+      .filter((value, index, self) => self.findIndex(v => v.trim().toLowerCase() === value.trim().toLowerCase()) === index); // dedupe
+    if (!this.categories.some(c => c.trim().toLowerCase() === newKey.toLowerCase())) {
+      this.categories.push(newKey);
+    }
+
+    this.saveCategories();
+    this.saveAndEmit();
+  }
+
+  /**
+   * Delete a category and all associated expenses.
+   */
+  deleteCategory(category: string): void {
+    const keyNorm = category.trim().toLowerCase();
+    if (!keyNorm) return;
+
+    // 1. Remove from categories list (case-insensitive)
+    this.categories = this.categories.filter(c => c.trim().toLowerCase() !== keyNorm);
+
+    // 2. Remove expenses belonging to this category
+    for (const month of Object.keys(this.data.months)) {
+      const monthly = this.data.months[month];
+      monthly.expenses = monthly.expenses.filter(e => e.category.trim().toLowerCase() !== keyNorm);
+      // Delete month if empty
+      if (monthly.expenses.length === 0) {
+        delete this.data.months[month];
+      }
+    }
+
+    this.saveCategories();
+    this.saveAndEmit();
   }
 
   private loadCategories(): string[] {
