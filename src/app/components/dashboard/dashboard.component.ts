@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { ExpenseService } from '../../services/expense.service';
 import { SharedModule } from '../../shared.module';
 import { ExpenseListComponent } from '../expense-list/expense-list.component';
@@ -7,9 +8,10 @@ import { ExpenseListComponent } from '../expense-list/expense-list.component';
   selector: 'app-dashboard',
   standalone: true,
   templateUrl: './dashboard.component.html',
-  imports: [SharedModule, ExpenseListComponent]
+  imports: [SharedModule, ExpenseListComponent, RouterModule]
 })
 export class DashboardComponent {
+  scrolled = false;
   months: string[] = [];
   selectedMonth: string;
 
@@ -59,7 +61,12 @@ export class DashboardComponent {
   URL.revokeObjectURL(url);
 }
 
-importData(event: Event): void {
+@HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.scrolled = window.scrollY > 0;
+  }
+
+  importData(event: Event): void {
   const input = event.target as HTMLInputElement;
   if (!input.files?.length) return;
 

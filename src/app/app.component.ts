@@ -2,20 +2,25 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SidebarComponent } from './sidebar.component';
 import { SharedModule } from './shared.module';
+import { WhatsNewDialogComponent } from './components/whats-new-dialog/whats-new-dialog.component';
+
+export const WHATS_NEW_VERSION = '1.1.0';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [SharedModule, RouterModule, SidebarComponent],
+  imports: [SharedModule, RouterModule, SidebarComponent, WhatsNewDialogComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
   /**
    * Current theme mode: 'light' or 'dark'.
    */
   theme: 'light' | 'dark' = 'light';
   sidebarOpen = false;
+  showWhatsNew = false;
 
   constructor() {
     // Load theme from localStorage or system preference
@@ -26,6 +31,12 @@ export class AppComponent {
       this.theme = 'dark';
     }
     this.applyTheme();
+
+    // Show What's New dialog once per app version
+    const seenVersion = localStorage.getItem('whats-new-version');
+    if (seenVersion !== WHATS_NEW_VERSION) {
+      this.showWhatsNew = true;
+    }
   }
 
   /**
@@ -50,5 +61,13 @@ export class AppComponent {
   }
   closeSidebar() {
     this.sidebarOpen = false;
+  }
+
+  /**
+   * Dismiss the What's New dialog and persist that this version was seen.
+   */
+  dismissWhatsNew() {
+    localStorage.setItem('whats-new-version', WHATS_NEW_VERSION);
+    this.showWhatsNew = false;
   }
 }

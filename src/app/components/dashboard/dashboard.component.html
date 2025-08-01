@@ -19,3 +19,8 @@
 </div>
 
 <app-expense-list [month]="selectedMonth"></app-expense-list>
+
+<!-- Floating action button to add a new expense -->
+<a class="btn btn-primary rounded-circle fab" routerLink="/add" aria-label="Add Expense" [class.fab-transparent]="scrolled">
+  <i class="bi bi-plus-lg"></i>
+</a>

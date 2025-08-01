@@ -19,7 +19,11 @@
 </div>
 <form *ngIf="showAdd && total > 0 && count > 0" (ngSubmit)="addSplitExpense()" class="card card-body mb-3 split-theme-card border-0">
   <div class="row g-2 align-items-end">
-    <div class="col-12 col-md-4">
+    <div class="col-12 col-md-3">
+      <label class="form-label">Date</label>
+      <input type="date" class="form-control" [(ngModel)]="date" name="date" required />
+    </div>
+    <div class="col-12 col-md-3">
       <label class="form-label">Category</label>
       <!-- Category dropdown with custom option -->
       <ng-container *ngIf="categories.length > 0; else textInput">
@@ -33,7 +37,7 @@
         <input type="text" class="form-control" [(ngModel)]="category" name="category" required />
       </ng-template>
     </div>
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-4">
       <label class="form-label">Description</label>
       <input type="text" class="form-control" [(ngModel)]="description" name="description" required placeholder="Description" />
     </div>

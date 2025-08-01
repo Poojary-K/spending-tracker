@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { ExpenseService } from '../../services/expense.service';
 import { Expense } from '../../models/expense.model';
 import { SharedModule } from '../../shared.module';
@@ -29,7 +30,7 @@ export class AddExpenseComponent {
     return this.service.getCategories();
   }
 
-  constructor(private service: ExpenseService) {}
+  constructor(private service: ExpenseService, private router: Router) {}
 
   capitalizeCategory(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -45,7 +46,13 @@ export class AddExpenseComponent {
     // Capitalize the category
     category = this.capitalizeCategory(category);
 
-    this.service.addExpense({ ...this.expense, category });
+    // Round amount to two decimal places to avoid floating-point precision errors
+    const roundedAmount = Math.round(this.expense.amount * 100) / 100;
+
+    this.service.addExpense({ ...this.expense, category, amount: roundedAmount });
+
+    // Navigate back to dashboard after successful add
+    this.router.navigate(['/dashboard']);
 
     // Reset the form fields, but keep category for convenience
     this.expense = {

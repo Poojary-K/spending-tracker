@@ -13,6 +13,7 @@ export class SplitCalculatorComponent {
   total = 0;
   count = 1;
   showAdd = false;
+  date: string = new Date().toISOString().slice(0, 10);
   category = '';
   customCategory = '';
   description = '';
@@ -34,11 +35,12 @@ export class SplitCalculatorComponent {
       category = this.customCategory.trim();
     }
     if (!category || !this.description.trim()) return;
+    const roundedShare = Math.round(this.share * 100) / 100;
     this.service.addExpense({
-      date: new Date().toISOString().slice(0, 10),
+      date: this.date,
       category: category.trim(),
       description: `Split: ${this.description.trim()}`,
-      amount: +this.share
+      amount: roundedShare
     });
     this.added = true;
     setTimeout(() => this.added = false, 2000);

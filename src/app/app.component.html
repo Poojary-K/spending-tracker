@@ -1,4 +1,7 @@
 <div class="container-fluid">
+
+<!-- What's New dialog component -->
+<app-whats-new-dialog *ngIf="showWhatsNew" (closed)="dismissWhatsNew()"></app-whats-new-dialog>
   <div class="row">
     <div class="col-12 col-md-3 col-lg-2 p-0">
       <!-- Sidebar: controlled by open/close state -->
