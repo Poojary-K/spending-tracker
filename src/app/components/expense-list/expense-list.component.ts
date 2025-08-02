@@ -6,22 +6,26 @@ import { Component, Input, OnChanges, OnInit, OnDestroy } from '@angular/core';
 import { ExpenseService } from '../../services/expense.service';
 import { Expense } from '../../models/expense.model';
 import { SharedModule } from '../../shared.module';
+import { NgbPopoverModule, NgbModalModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ViewChild, TemplateRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-expense-list',
   standalone: true,
   templateUrl: './expense-list.component.html',
-  imports: [SharedModule]
+  imports: [SharedModule, NgbPopoverModule, NgbModalModule]
 })
 export class ExpenseListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() month = new Date().toISOString().slice(0, 7);
   groupedExpenses: { [category: string]: Expense[] } = {};
   editing: Expense | null = null;
+  selectedExpense: Expense | null = null;
+  @ViewChild('editExpenseModal') editExpenseModal!: TemplateRef<any>;
   originalCopy: Expense | null = null;
   private sub?: Subscription;
 
-  constructor(public service: ExpenseService) {}
+  constructor(public service: ExpenseService, private modal: NgbModal) {}
 
   ngOnInit() {
     // Subscribe to real-time changes
@@ -62,13 +66,44 @@ export class ExpenseListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   formatDate(iso: string): string {
-    const [yyyy, mm, dd] = iso.split('-');
-    return `${dd}-${mm}-${yyyy}`;
+    const date = new Date(iso);
+    if (isNaN(date.getTime())) {
+      return iso;
+    }
+    const day = date.getDate();
+    const suffix = this.getOrdinalSuffix(day);
+    const weekday = date.toLocaleDateString('en-US', { weekday: 'short' });
+    return `${day}${suffix} ${weekday}`;
+  }
+
+  private getOrdinalSuffix(day: number): string {
+    if (day >= 11 && day <= 13) {
+      return 'th';
+    }
+    switch (day % 10) {
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
+    }
   }
 
   startEdit(expense: Expense) {
-    this.editing = expense;
-    this.originalCopy = { ...expense };
+    this.selectedExpense = { ...expense };
+    const modalRef = this.modal.open(this.editExpenseModal, { centered: true, windowClass: 'custom-modal' });
+    modalRef.result.then(result => {
+      if (result === 'save' && this.selectedExpense) {
+        Object.assign(expense, this.selectedExpense);
+        this.service.updateExpense(expense);
+      }
+      this.selectedExpense = null;
+    }).catch(() => {
+      this.selectedExpense = null;
+    });
   }
 
   cancelEdit() {
@@ -87,8 +122,10 @@ export class ExpenseListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+
+
   confirmDelete(expense: Expense) {
-    const confirmMsg = `Are you sure you want to delete: 9${expense.amount} for "${expense.description}" on ${this.formatDate(expense.date)}?`;
+    const confirmMsg = `Are you sure you want to delete: ₹${expense.amount} for \"${expense.description}\" on ${this.formatDate(expense.date)}?`;
     if (confirm(confirmMsg)) {
       this.deleteExpense(expense);
     }

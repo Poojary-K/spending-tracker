@@ -3,7 +3,10 @@
 <div *ngIf="getCategories().length > 0; else noData">
   <div *ngFor="let category of getCategories()" class="mb-4">
     <h6 class="text-primary border-bottom d-flex align-items-center">
-      <span class="flex-grow-1">{{ capitalize(category) }}</span>
+      <span class="flex-grow-1 d-flex align-items-center">
+        {{ capitalize(category) }}
+        <span class="badge bg-primary-subtle text-primary ms-2">₹{{ getCategoryTotal(category) }}</span>
+      </span>
       <button class="btn btn-sm btn-outline-secondary me-1" (click)="renameCategoryPrompt(category)" title="Rename Category">
         <i class="bi bi-pencil-square"></i>
       </button>
@@ -12,7 +15,7 @@
       </button>
     </h6>
     <div class="table-responsive">
-      <table class="table table-sm table-bordered">
+      <table class="table table-sm table-bordered text-center align-middle">
         <thead>
           <tr>
             <th>Date</th>
@@ -28,15 +31,32 @@
             <td *ngIf="editing !== e">{{ e.description }}</td>
             <td *ngIf="editing !== e">₹{{ e.amount }}</td>
             <td *ngIf="editing !== e">
-              <button class="btn btn-sm btn-outline-primary me-1" (click)="startEdit(e)">
-                <i class="bi bi-pencil-square"></i>
+              <button type="button"
+                      class="btn p-0 border-0 bg-transparent text-secondary"
+                      #dotPopover="ngbPopover"
+                      [ngbPopover]="actionMenu"
+                      container="body"
+                      popoverClass="custom-popover shadow-sm"
+                      triggers="manual"
+                      [autoClose]="'outside'"
+                      placement="auto"
+                      (click)="dotPopover.toggle()">
+                <i class="bi bi-three-dots-vertical small"></i>
               </button>
-              <button class="btn btn-sm btn-outline-danger" (click)="confirmDelete(e)">
-                <i class="bi bi-trash"></i>
-              </button>
+
+              <ng-template #actionMenu>
+                <div class="d-flex flex-column py-1">
+                  <button class="dropdown-item mb-1" (click)="startEdit(e); dotPopover.close()">
+                    <i class="bi bi-pencil-square me-2"></i> Edit
+                  </button>
+                  <button class="dropdown-item text-danger" (click)="confirmDelete(e); dotPopover.close()">
+                    <i class="bi bi-trash me-2"></i> Delete
+                  </button>
+                </div>
+              </ng-template>
             </td>
 
-            <!-- Edit mode -->
+            <!-- Edit mode remains for legacy (not used now) -->
             <ng-container *ngIf="editing === e">
               <td><input [(ngModel)]="e.date" type="date" class="form-control form-control-sm" /></td>
               <td><input [(ngModel)]="e.description" type="text" class="form-control form-control-sm" /></td>
@@ -52,10 +72,6 @@
             </ng-container>
           </tr>
 
-          <tr class="expense-total-row fw-bold">
-            <td colspan="3">Total</td>
-            <td>₹{{ getCategoryTotal(category) }}</td>
-          </tr>
         </tbody>
       </table>
     </div>
@@ -64,4 +80,30 @@
 
 <ng-template #noData>
   <p class="text-muted mt-3">No expenses recorded for this month.</p>
+</ng-template>
+
+<!-- Modal Template for Editing Expense -->
+<ng-template #editExpenseModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Edit Expense</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body" *ngIf="selectedExpense">
+    <div class="mb-3">
+      <label class="form-label">Date</label>
+      <input type="date" class="form-control" [(ngModel)]="selectedExpense.date" name="editDate" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <input type="text" class="form-control" [(ngModel)]="selectedExpense.description" name="editDescription" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Amount (₹)</label>
+      <input type="number" class="form-control" [(ngModel)]="selectedExpense.amount" name="editAmount" />
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close('save')">Save</button>
+  </div>
 </ng-template>

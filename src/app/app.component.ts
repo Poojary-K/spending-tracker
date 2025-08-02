@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { SidebarComponent } from './sidebar.component';
 import { SharedModule } from './shared.module';
 import { WhatsNewDialogComponent } from './components/whats-new-dialog/whats-new-dialog.component';
@@ -20,7 +20,10 @@ export class AppComponent {
   sidebarOpen = false;
   showWhatsNew = false;
 
-  constructor() {
+  constructor(private router: Router) {
+    // Force redirect to dashboard on every load
+    this.router.navigate(['/dashboard']);
+
     // Load theme from localStorage or system preference
     const saved = localStorage.getItem('theme');
     if (saved === 'dark' || saved === 'light') {

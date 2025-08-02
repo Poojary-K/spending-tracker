@@ -155,3 +155,29 @@ body.dark-mode .expense-total-row {
     margin-bottom: 0.75rem !important;
   }
 }
+
+/* --- Theme overrides added --- */
+.custom-modal .modal-content,
+.custom-modal .modal-header,
+.custom-modal .modal-body,
+.custom-modal .modal-footer {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+.custom-modal .modal-header,
+.custom-modal .modal-footer {
+  border-color: var(--border) !important;
+}
+
+/* --- Popover theme --- */
+.custom-popover .popover-body {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.custom-popover .popover-arrow::after {
+  background-color: var(--background) !important;
+  border: none !important;
+}
