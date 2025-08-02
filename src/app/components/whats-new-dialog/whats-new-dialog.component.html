@@ -1,14 +1,16 @@
 <!-- Overlay -->
-<div class="whats-new-overlay">
+<div class="whats-new-overlay" *ngIf="entries.length">
   <div class="whats-new-modal card shadow">
     <div class="card-header bg-primary text-white">
       <h5 class="mb-0">What's New</h5>
     </div>
     <div class="card-body">
-      <p class="mb-2">Here's what's new in this update:</p>
-      <ul>
-        <li>You can now rename or delete entire categories directly in the expense list. Just tap the pencil or trash icons next to a category.</li>
-      </ul>
+      <div *ngFor="let entry of entries">
+        <h6 class="fw-bold">{{ entry.version }}</h6>
+        <ul>
+          <li *ngFor="let change of entry.changes">{{ change }}</li>
+        </ul>
+      </div>
       <button class="btn btn-primary" type="button" (click)="close()">Got it!</button>
     </div>
   </div>

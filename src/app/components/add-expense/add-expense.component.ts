@@ -41,7 +41,7 @@ export class AddExpenseComponent {
     if (category === '__custom__') {
       category = this.customCategory.trim();
     }
-    if (!category || !this.expense.amount || !this.expense.date || !this.expense.description) return;
+    if (!category || !this.expense.amount || !this.expense.date) return;
 
     // Capitalize the category
     category = this.capitalizeCategory(category);

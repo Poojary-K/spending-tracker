@@ -3,9 +3,7 @@ import { RouterModule } from '@angular/router';
 import { SidebarComponent } from './sidebar.component';
 import { SharedModule } from './shared.module';
 import { WhatsNewDialogComponent } from './components/whats-new-dialog/whats-new-dialog.component';
-
-export const WHATS_NEW_VERSION = '1.2.0';
-
+import { WHATS_NEW_VERSION } from './version';
 @Component({
   selector: 'app-root',
   standalone: true,
