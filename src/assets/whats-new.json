@@ -1,5 +1,12 @@
 [
   {
+    "version": "1.3.2",
+    "changes": [
+      "Bug fix: The What's New updates list now scrolls smoothly, and the 'Got it!' button stays in place so you can close it anytime.",
+      "Bug fix: Removed date suffixes like 'st', 'nd', 'rd', and 'th' for a cleaner, easier-to-read date format."
+    ]
+  },
+  {
     "version": "1.3.1",
     "title": "Expense Management Revamped",
     "changes": [

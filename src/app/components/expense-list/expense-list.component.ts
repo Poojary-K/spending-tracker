@@ -71,26 +71,10 @@ export class ExpenseListComponent implements OnInit, OnChanges, OnDestroy {
       return iso;
     }
     const day = date.getDate();
-    const suffix = this.getOrdinalSuffix(day);
     const weekday = date.toLocaleDateString('en-US', { weekday: 'short' });
-    return `${day}${suffix} ${weekday}`;
+    return `${day} ${weekday}`;
   }
 
-  private getOrdinalSuffix(day: number): string {
-    if (day >= 11 && day <= 13) {
-      return 'th';
-    }
-    switch (day % 10) {
-      case 1:
-        return 'st';
-      case 2:
-        return 'nd';
-      case 3:
-        return 'rd';
-      default:
-        return 'th';
-    }
-  }
 
   startEdit(expense: Expense) {
     this.selectedExpense = { ...expense };

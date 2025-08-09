@@ -12,6 +12,26 @@
 }
 
 .whats-new-modal {
-  max-width: 500px;
-  width: 90%;
+  width: 500px;       /* Fixed width */
+  height: 70vh;       /* Fixed height */
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Let only body scroll */
+.whats-new-modal .card-body {
+  flex: 1;              /* Fills space between header and footer */
+  overflow-y: auto;     /* Scroll inside body */
+}
+
+/* Footer stays sticky at bottom */
+.whats-new-modal .card-footer {
+  padding: 0.75rem;
+  background: #fff;
+  border-top: 1px solid #dee2e6;
+  display: flex;
+  justify-content: flex-end;
 }
