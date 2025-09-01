@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.4.0",
+    "title": "Major Bug Fixes & Dark Mode Improvements",
+    "changes": [
+      "🔧 Fixed critical bug: Editing expense dates to different months now works correctly without duplication",
+      "🔧 Improved expense editing logic to properly handle month changes and clean up empty months",
+      "🌙 Enhanced dark mode visibility: All secondary text is now clearly visible in both light and dark themes",
+      "🎨 Added custom CSS classes for better text contrast across different color schemes"
+    ]
+  },
+  {
     "version": "1.3.2",
     "changes": [
       "Bug fix: The What's New updates list now scrolls smoothly, and the 'Got it!' button stays in place so you can close it anytime.",

@@ -1,0 +1,42 @@
+/* Custom styling for better dark mode support */
+.no-data-message {
+  color: #6c757d; /* Bootstrap's text-muted color for light mode */
+  margin-top: 1rem;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .no-data-message {
+    color: #adb5bd; /* Lighter gray that's visible in dark mode */
+  }
+}
+
+/* Alternative approach using CSS custom properties for better theme switching */
+.no-data-message {
+  color: var(--bs-secondary, #6c757d);
+  margin-top: 1rem;
+}
+
+/* Ensure visibility in both themes */
+.no-data-message {
+  opacity: 0.8;
+  font-style: italic;
+}
+
+/* Custom styling for action button icons */
+.action-icon {
+  color: #6c757d; /* Bootstrap's text-secondary color for light mode */
+}
+
+/* Dark mode support for action icons */
+@media (prefers-color-scheme: dark) {
+  .action-icon {
+    color: #adb5bd; /* Lighter gray that's visible in dark mode */
+  }
+}
+
+/* Alternative approach using CSS custom properties for action icons */
+.action-icon {
+  color: var(--bs-secondary, #6c757d);
+  opacity: 0.8;
+}

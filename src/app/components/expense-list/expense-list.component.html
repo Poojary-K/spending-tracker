@@ -32,7 +32,7 @@
             <td *ngIf="editing !== e">₹{{ e.amount }}</td>
             <td *ngIf="editing !== e">
               <button type="button"
-                      class="btn p-0 border-0 bg-transparent text-secondary"
+                      class="btn p-0 border-0 bg-transparent action-icon"
                       #dotPopover="ngbPopover"
                       [ngbPopover]="actionMenu"
                       container="body"
@@ -79,7 +79,7 @@
 </div>
 
 <ng-template #noData>
-  <p class="text-muted mt-3">No expenses recorded for this month.</p>
+  <p class="no-data-message">No expenses recorded for this month.</p>
 </ng-template>
 
 <!-- Modal Template for Editing Expense -->

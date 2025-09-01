@@ -15,3 +15,21 @@
   z-index: 1050; /* Ensures it stays above other elements */
 }
 
+/* Custom styling for better dark mode support */
+.month-label {
+  color: #6c757d; /* Bootstrap's text-secondary color for light mode */
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .month-label {
+    color: #adb5bd; /* Lighter gray that's visible in dark mode */
+  }
+}
+
+/* Alternative approach using CSS custom properties for better theme switching */
+.month-label {
+  color: var(--bs-secondary, #6c757d);
+  opacity: 0.9;
+}
+

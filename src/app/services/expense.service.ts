@@ -68,24 +68,47 @@ export class ExpenseService {
     this.saveAndEmit();
   }
 
-  updateExpense(updated: Expense): void {
-    const month = updated.date.slice(0, 7);
-    const monthly = this.data.months[month];
-    if (!monthly) return;
-
-    const index = monthly.expenses.findIndex(e =>
-      e.date === updated.date &&
-      e.category.toLowerCase() === updated.category.toLowerCase() &&
-      e.description === updated.description &&
-      e.amount === updated.amount
-    );
-
-    if (index !== -1) {
-      const normalized = { ...updated, category: this.capitalize(updated.category) };
-      monthly.expenses[index] = normalized;
-      this.addCategory(normalized.category);
-      this.saveAndEmit();
+  updateExpense(updated: Expense, originalExpense?: Expense): void {
+    const newMonth = updated.date.slice(0, 7);
+    
+    // If we have the original expense, we need to find and remove it from its original month
+    if (originalExpense) {
+      const originalMonth = originalExpense.date.slice(0, 7);
+      const originalMonthly = this.data.months[originalMonth];
+      
+      if (originalMonthly) {
+        // Find and remove the original expense using the ORIGINAL values
+        // We need to match exactly what was stored, not what the user is updating to
+        const originalIndex = originalMonthly.expenses.findIndex(e =>
+          e.date === originalExpense.date &&
+          e.category.toLowerCase() === originalExpense.category.toLowerCase() &&
+          e.description === originalExpense.description &&
+          e.amount === originalExpense.amount
+        );
+        
+        if (originalIndex !== -1) {
+          // Remove the expense from the original month
+          originalMonthly.expenses.splice(originalIndex, 1);
+          
+          // Clean up empty month
+          if (originalMonthly.expenses.length === 0) {
+            delete this.data.months[originalMonth];
+          }
+        }
+      }
     }
+    
+    // Ensure the new month exists
+    if (!this.data.months[newMonth]) {
+      this.data.months[newMonth] = { expenses: [] };
+    }
+    
+    // Add the updated expense to the new month
+    const normalized = { ...updated, category: this.capitalize(updated.category) };
+    this.data.months[newMonth].expenses.push(normalized);
+    this.addCategory(normalized.category);
+    
+    this.saveAndEmit();
   }
 
   deleteExpense(target: Expense): void {

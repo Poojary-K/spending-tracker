@@ -81,8 +81,18 @@ export class ExpenseListComponent implements OnInit, OnChanges, OnDestroy {
     const modalRef = this.modal.open(this.editExpenseModal, { centered: true, windowClass: 'custom-modal' });
     modalRef.result.then(result => {
       if (result === 'save' && this.selectedExpense) {
-        Object.assign(expense, this.selectedExpense);
-        this.service.updateExpense(expense);
+        // Store the original expense before updating
+        const originalExpense = { ...expense };
+        
+        // Create a copy of the updated expense without modifying the original
+        const updatedExpense = { ...this.selectedExpense };
+        
+        // Pass both the updated expense and the original expense to handle month changes
+        // Don't modify the original expense object until after successful update
+        this.service.updateExpense(updatedExpense, originalExpense);
+        
+        // Only after successful update, update the expense object in the UI
+        Object.assign(expense, updatedExpense);
       }
       this.selectedExpense = null;
     }).catch(() => {
@@ -99,9 +109,11 @@ export class ExpenseListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   saveEdit() {
-    if (this.editing) {
-      this.service.updateExpense(this.editing);
+    if (this.editing && this.originalCopy) {
+      // Pass both the updated expense and the original expense to handle month changes
+      this.service.updateExpense(this.editing, this.originalCopy);
       this.editing = null;
+      this.originalCopy = null;
       // No need to call groupExpenses; will update via subscription
     }
   }

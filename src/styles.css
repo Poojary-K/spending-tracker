@@ -21,7 +21,7 @@ body.light-mode {
 }
 
 body.dark-mode {
-  --background: #181a1b;
+  --background: #000000;
   --foreground: #f8f9fa;
   --primary: #66b2ff;
   --secondary: #adb5bd;
