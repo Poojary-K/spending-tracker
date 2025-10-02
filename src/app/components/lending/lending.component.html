@@ -1,0 +1,229 @@
+<div class="lending-container">
+  <div class="header">
+    <button class="back-btn" (click)="goToDashboard()">
+      <i class="bi bi-arrow-left"></i> Back to Dashboard
+    </button>
+    <h1>Lending & Borrowing</h1>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-cards-compact">
+    <div class="summary-item lent">
+      <i class="bi bi-arrow-up-circle"></i>
+      <span class="label">Lent</span>
+      <span class="amount">₹{{ getTotalLent() | number:'1.2-2' }}</span>
+    </div>
+
+    <div class="summary-item borrowed">
+      <i class="bi bi-arrow-down-circle"></i>
+      <span class="label">Borrowed</span>
+      <span class="amount">₹{{ getTotalBorrowed() | number:'1.2-2' }}</span>
+    </div>
+
+    <div class="summary-item net" [class.positive]="getNetLending() >= 0" [class.negative]="getNetLending() < 0">
+      <i class="bi bi-balance-scale"></i>
+      <span class="label">Net</span>
+      <span class="amount">₹{{ getNetLending() | number:'1.2-2' }}</span>
+    </div>
+  </div>
+
+  <!-- Add New Lending Button -->
+  <div class="add-section">
+    <button class="add-btn" (click)="openAddModal(addLendingModal)">
+      <i class="bi bi-plus-circle"></i>
+      Add New Lending/Borrowing
+    </button>
+  </div>
+
+
+  <!-- Active Lendings -->
+  <div class="lendings-section" *ngIf="getActiveLendings().length > 0">
+    <h2>Active Lendings & Borrowings</h2>
+    <div *ngFor="let personName of getPersonNames()" class="mb-4">
+      <h6 class="text-primary border-bottom d-flex align-items-center">
+        <span class="flex-grow-1 d-flex align-items-center">
+          {{ personName }}
+          <span class="badge bg-primary-subtle text-primary ms-2" 
+                [class.bg-success-subtle]="getPersonTotal(personName) > 0"
+                [class.text-success]="getPersonTotal(personName) > 0"
+                [class.bg-danger-subtle]="getPersonTotal(personName) < 0"
+                [class.text-danger]="getPersonTotal(personName) < 0">
+            ₹{{ getPersonTotal(personName) | number:'1.2-2' }}
+          </span>
+        </span>
+      </h6>
+      <div class="table-responsive">
+        <table class="table table-sm table-bordered text-center align-middle">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Amount (₹)</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let lending of getGroupedLendings()[personName]"
+                [class.table-success]="lending.type === 'lent'"
+                [class.table-danger]="lending.type === 'borrowed'">
+              <td>{{ formatDate(lending.date) }}</td>
+              <td>
+                <span class="badge" 
+                      [class.bg-success]="lending.type === 'lent'"
+                      [class.bg-danger]="lending.type === 'borrowed'">
+                  <i class="bi" [class.bi-arrow-up-circle]="lending.type === 'lent'" 
+                     [class.bi-arrow-down-circle]="lending.type === 'borrowed'"></i>
+                  {{ lending.type === 'lent' ? 'Lent' : 'Borrowed' }}
+                </span>
+              </td>
+              <td>{{ lending.description || '-' }}</td>
+              <td class="fw-bold">₹{{ lending.amount | number:'1.2-2' }}</td>
+              <td>
+                <button type="button"
+                        class="btn p-0 border-0 bg-transparent action-icon"
+                        #dotPopover="ngbPopover"
+                        [ngbPopover]="actionMenu"
+                        container="body"
+                        popoverClass="custom-popover shadow-sm"
+                        triggers="manual"
+                        [autoClose]="'outside'"
+                        placement="auto"
+                        (click)="dotPopover.toggle()">
+                  <i class="bi bi-three-dots-vertical small"></i>
+                </button>
+
+                <ng-template #actionMenu>
+                  <div class="d-flex flex-column py-1">
+                    <button class="dropdown-item mb-1" (click)="startEdit(lending, editLendingModal); dotPopover.close()">
+                      <i class="bi bi-pencil-square me-2"></i> Edit
+                    </button>
+                    <button class="dropdown-item mb-1" (click)="markAsRepaid(lending); dotPopover.close()">
+                      <i class="bi bi-check-circle me-2"></i> Mark as Repaid
+                    </button>
+                    <button class="dropdown-item text-danger" (click)="deleteLending(lending); dotPopover.close()">
+                      <i class="bi bi-trash me-2"></i> Delete
+                    </button>
+                  </div>
+                </ng-template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="lendings.length === 0">
+    <div class="empty-icon">
+      <i class="bi bi-wallet2"></i>
+    </div>
+    <h3>No Lendings or Borrowings Yet</h3>
+    <p>Start tracking your money lending and borrowing activities.</p>
+    <button class="add-btn" (click)="openAddModal(addLendingModal)">
+      <i class="bi bi-plus-circle"></i>
+      Add Your First Lending
+    </button>
+  </div>
+</div>
+
+<!-- Add Lending Modal -->
+<ng-template #addLendingModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Add New Lending/Borrowing</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="addLending()">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="type" class="form-label">Type</label>
+          <select id="type" class="form-select" [(ngModel)]="newLending.type" name="type" required>
+            <option value="lent">Lent to Someone</option>
+            <option value="borrowed">Borrowed from Someone</option>
+          </select>
+        </div>
+        
+        <div class="col-md-6">
+          <label for="personName" class="form-label">Person Name</label>
+          <input type="text" id="personName" class="form-control" [(ngModel)]="newLending.personName" 
+                 name="personName" placeholder="Enter person's name" required>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="amount" class="form-label">Amount (₹)</label>
+          <input type="number" id="amount" class="form-control" [(ngModel)]="newLending.amount" 
+                 name="amount" placeholder="0.00" step="0.01" min="0" required>
+        </div>
+        
+        <div class="col-md-6">
+          <label for="date" class="form-label">Date</label>
+          <input type="date" id="date" class="form-control" [(ngModel)]="newLending.date" 
+                 name="date" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description (Optional)</label>
+        <textarea id="description" class="form-control" [(ngModel)]="newLending.description" 
+                  name="description" placeholder="Add a description..." rows="3"></textarea>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="addLending()">Add Lending</button>
+  </div>
+</ng-template>
+
+<!-- Edit Lending Modal -->
+<ng-template #editLendingModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Edit Lending/Borrowing</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="saveEdit()">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="editType" class="form-label">Type</label>
+          <select id="editType" class="form-select" [ngModel]="editingLending?.type" (ngModelChange)="editingLending && (editingLending.type = $event)" name="editType" required>
+            <option value="lent">Lent to Someone</option>
+            <option value="borrowed">Borrowed from Someone</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="editPersonName" class="form-label">Person Name</label>
+          <input type="text" id="editPersonName" class="form-control" [ngModel]="editingLending?.personName" 
+                 (ngModelChange)="editingLending && (editingLending.personName = $event)" name="editPersonName" placeholder="Enter person's name" required>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="editAmount" class="form-label">Amount (₹)</label>
+          <input type="number" id="editAmount" class="form-control" [ngModel]="editingLending?.amount" 
+                 (ngModelChange)="editingLending && (editingLending.amount = $event)" name="editAmount" placeholder="0.00" step="0.01" min="0" required>
+        </div>
+        <div class="col-md-6">
+          <label for="editDate" class="form-label">Date</label>
+          <input type="date" id="editDate" class="form-control" [ngModel]="editingLending?.date" 
+                 (ngModelChange)="editingLending && (editingLending.date = $event)" name="editDate" required>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="editDescription" class="form-label">Description (Optional)</label>
+        <textarea id="editDescription" class="form-control" [ngModel]="editingLending?.description" 
+                  (ngModelChange)="editingLending && (editingLending.description = $event)" name="editDescription" placeholder="Add a description..." rows="3"></textarea>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="saveEdit(); modal.close()">Save Changes</button>
+  </div>
+</ng-template>

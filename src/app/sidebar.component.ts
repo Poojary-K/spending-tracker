@@ -35,6 +35,11 @@ import { CommonModule } from '@angular/common';
               <i class="bi bi-people-fill me-2"></i> Split Calculator
             </a>
           </li>
+          <li class="nav-item mb-2">
+            <a class="nav-link" routerLink="/lending" routerLinkActive="active" (click)="close.emit()">
+              <i class="bi bi-wallet2 me-2"></i> Lending & Borrowing
+            </a>
+          </li>
         </ul>
       </div>
     </nav>

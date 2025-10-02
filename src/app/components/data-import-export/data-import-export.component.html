@@ -2,11 +2,15 @@
 <hr>
 <div class="mb-3">
   <button class="btn btn-outline-secondary me-2" (click)="exportData()">
-    <i class="bi bi-download me-1"></i> Export Data
+    <i class="bi bi-download me-1"></i> Export All Data
   </button>
   <input type="file" class="form-control d-inline-block w-auto" (change)="importData($event)" accept=".json" />
 </div>
+<div class="alert alert-info">
+  <i class="bi bi-info-circle me-2"></i>
+  <strong>Export includes:</strong> All expenses and lending/borrowing data
+</div>
 <div *ngIf="exportedJson" class="alert alert-success mt-3">
-  Data exported!<br>
-  <a [href]="exportedJson" download="spending-tracker.json">Download spending-tracker.json</a>
+  All data exported successfully!<br>
+  <a [href]="exportedJson" download="spending-tracker-complete.json">Download spending-tracker-complete.json</a>
 </div> 

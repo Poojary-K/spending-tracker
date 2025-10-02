@@ -1,5 +1,19 @@
 [
   {
+    "version": "1.5.0",
+    "title": "💰 Lending & Borrowing Management",
+    "changes": [
+      "🆕 Brand new Lending & Borrowing section to track money you lend to others or borrow from friends",
+      "📊 Smart dashboard cards showing total lent, borrowed, and net amounts with beautiful carousel navigation",
+      "👥 Group transactions by person to easily track individual balances and see who owes you what",
+      "✏️ Easy editing with modal popups - click edit to modify any lending/borrowing record",
+      "📱 Fully mobile-responsive design that works perfectly on phones and tablets",
+      "🌙 Complete dark/light theme support for all lending features",
+      "💾 Enhanced data export now includes all your lending data for complete backups",
+      "🔄 Smart import system that works with both old expense-only files and new complete backups"
+    ]
+  },
+  {
     "version": "1.4.0",
     "title": "Major Bug Fixes & Dark Mode Improvements",
     "changes": [

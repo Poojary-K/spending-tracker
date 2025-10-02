@@ -181,3 +181,20 @@ body.dark-mode .expense-total-row {
   background-color: var(--background) !important;
   border: none !important;
 }
+
+/* --- Summary Details Theme Support --- */
+.summary-details {
+  color: var(--secondary);
+  font-size: 0.8rem;
+}
+
+/* Dark mode support for summary details */
+@media (prefers-color-scheme: dark) {
+  .summary-details {
+    color: #adb5bd;
+  }
+}
+
+body.dark-mode .summary-details {
+  color: #adb5bd !important;
+}

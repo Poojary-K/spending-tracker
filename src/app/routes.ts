@@ -21,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'split',
     loadComponent: () => import('./components/split-calculator/split-calculator.component').then(m => m.SplitCalculatorComponent)
+  },
+  {
+    path: 'lending',
+    loadComponent: () => import('./components/lending/lending.component').then(m => m.LendingComponent)
   }
 ]; 

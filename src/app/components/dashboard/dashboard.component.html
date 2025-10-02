@@ -1,14 +1,63 @@
 <h3 class="mt-3">Dashboard</h3>
 <hr>
-<!-- Prominent Total Spend Card -->
-<div class="card mb-4 bg-primary-subtle border-0 shadow-sm">
-  <div class="card-body d-flex align-items-center">
-    <i class="bi bi-cash-coin display-5 text-primary me-3"></i>
-    <div>
-      <div class="fw-bold text-primary" style="font-size: 1.5rem;">Total Spend</div>
-      <div class="fw-bold" style="font-size: 2.2rem;">₹{{ total(selectedMonth) }}</div>
-      <div class="month-label">for {{ getMonthName(selectedMonth) }}</div>
+
+
+<!-- Cards Carousel -->
+<div class="cards-carousel">
+  <div class="carousel-container">
+    <div class="carousel-track" [style.transform]="'translateX(-' + (currentCardIndex * 100) + '%)'">
+      <!-- Total Spend Card -->
+      <div class="carousel-card total-spend">
+        <div class="card-content">
+          <i class="bi bi-cash-coin cash-icon"></i>
+          <div class="card-text">
+            <div class="card-label">Total Spend</div>
+            <div class="card-amount">₹{{ total(selectedMonth) }}</div>
+            <div class="card-subtitle">for {{ getMonthName(selectedMonth) }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Lent Card -->
+      <div class="carousel-card total-lent" *ngIf="activeLendings.length > 0">
+        <div class="card-content">
+          <i class="bi bi-arrow-up-circle cash-icon"></i>
+          <div class="card-text">
+            <div class="card-label">Total Lent</div>
+            <div class="card-amount">₹{{ getTotalLent() | number:'1.2-2' }}</div>
+            <div class="card-subtitle">to others</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Borrowed Card -->
+      <div class="carousel-card total-borrowed" *ngIf="activeLendings.length > 0">
+        <div class="card-content">
+          <i class="bi bi-arrow-down-circle cash-icon"></i>
+          <div class="card-text">
+            <div class="card-label">Total Borrowed</div>
+            <div class="card-amount">₹{{ getTotalBorrowed() | number:'1.2-2' }}</div>
+            <div class="card-subtitle">from others</div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+  
+  <!-- Carousel Controls -->
+  <div class="carousel-controls" *ngIf="getTotalCards() > 1">
+    <button class="carousel-btn prev" (click)="previousCard()" [disabled]="currentCardIndex === 0">
+      <i class="bi bi-chevron-left"></i>
+    </button>
+    <div class="carousel-dots">
+      <span *ngFor="let i of getCardIndices()" 
+            class="dot" 
+            [class.active]="i === currentCardIndex"
+            (click)="goToCard(i)"></span>
+    </div>
+    <button class="carousel-btn next" (click)="nextCard()" [disabled]="currentCardIndex === getTotalCards() - 1">
+      <i class="bi bi-chevron-right"></i>
+    </button>
   </div>
 </div>
 <div class="form-group">

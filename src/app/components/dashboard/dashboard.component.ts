@@ -1,21 +1,31 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ExpenseService } from '../../services/expense.service';
+import { LendingService } from '../../services/lending.service';
 import { SharedModule } from '../../shared.module';
 import { ExpenseListComponent } from '../expense-list/expense-list.component';
+import { Lending } from '../../models/lending.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css'],
   imports: [SharedModule, ExpenseListComponent, RouterModule]
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit, OnDestroy {
   scrolled = false;
   months: string[] = [];
   selectedMonth: string;
+  activeLendings: Lending[] = [];
+  currentCardIndex = 0;
+  private lendingSub?: Subscription;
 
-  constructor(public service: ExpenseService) {
+  constructor(
+    public service: ExpenseService,
+    public lendingService: LendingService
+  ) {
     const currentMonth = new Date().toISOString().slice(0, 7); // "YYYY-MM"
 
     // Get all months from expenses
@@ -31,6 +41,17 @@ export class DashboardComponent {
 
     // Select current month
     this.selectedMonth = currentMonth;
+  }
+
+  ngOnInit() {
+    this.lendingSub = this.lendingService.changes$.subscribe(() => {
+      this.activeLendings = this.lendingService.getActiveLendings();
+    });
+    this.activeLendings = this.lendingService.getActiveLendings();
+  }
+
+  ngOnDestroy() {
+    this.lendingSub?.unsubscribe();
   }
 
   /**
@@ -94,5 +115,69 @@ export class DashboardComponent {
   reader.readAsText(file);
 }
 
+  getTotalLent(): number {
+    return this.lendingService.getTotalLent();
+  }
 
+  getTotalBorrowed(): number {
+    return this.lendingService.getTotalBorrowed();
+  }
+
+  getNetLending(): number {
+    return this.lendingService.getNetLending();
+  }
+
+  formatDate(iso: string): string {
+    const date = new Date(iso);
+    if (isNaN(date.getTime())) {
+      return iso;
+    }
+    const day = date.getDate();
+    const month = date.toLocaleDateString('en-US', { month: 'short' });
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  }
+
+  markAsRepaid(lending: Lending) {
+    const confirmMsg = `Mark ₹${lending.amount} ${lending.type === 'lent' ? 'lent to' : 'borrowed from'} "${lending.personName}" as repaid?`;
+    if (confirm(confirmMsg)) {
+      this.lendingService.markAsRepaid(lending.id);
+    }
+  }
+
+  deleteLending(lending: Lending) {
+    const confirmMsg = `Are you sure you want to delete: ₹${lending.amount} ${lending.type === 'lent' ? 'lent to' : 'borrowed from'} "${lending.personName}"?`;
+    if (confirm(confirmMsg)) {
+      this.lendingService.deleteLending(lending.id);
+    }
+  }
+
+  // Carousel methods
+  getTotalCards(): number {
+    let total = 1; // Always have total spend card
+    if (this.activeLendings.length > 0) {
+      total += 2; // Add lent and borrowed cards
+    }
+    return total;
+  }
+
+  getCardIndices(): number[] {
+    return Array.from({ length: this.getTotalCards() }, (_, i) => i);
+  }
+
+  nextCard(): void {
+    if (this.currentCardIndex < this.getTotalCards() - 1) {
+      this.currentCardIndex++;
+    }
+  }
+
+  previousCard(): void {
+    if (this.currentCardIndex > 0) {
+      this.currentCardIndex--;
+    }
+  }
+
+  goToCard(index: number): void {
+    this.currentCardIndex = index;
+  }
 }
