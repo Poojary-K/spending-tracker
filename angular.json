@@ -55,8 +55,6 @@
                 "fonts": true
               },
               "extractLicenses": true,
-              "vendorChunk": false,
-              "namedChunks": false,
               "sourceMap": false
             },
             "development": {
