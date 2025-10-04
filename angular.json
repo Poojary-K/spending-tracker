@@ -29,17 +29,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "src/styles.css"
-            ],
-            "optimization": {
-              "scripts": true,
-              "styles": true,
-              "fonts": true
-            },
-            "buildOptimizer": true,
-            "aot": true,
-            "extractLicenses": true,
-            "vendorChunk": false,
-            "namedChunks": false
+            ]
           },
           "configurations": {
             "production": {
@@ -64,8 +54,6 @@
                 },
                 "fonts": true
               },
-              "buildOptimizer": true,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "namedChunks": false,
