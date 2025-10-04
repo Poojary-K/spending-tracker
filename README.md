@@ -1,45 +1,184 @@
-# �� Spending Tracker
+# 💸 Spend Tracker - Free Personal Finance Management App
 
-> _This is a time-pass project I built because I wanted something like this for myself... but couldn’t find anything that fit!_
+> _A comprehensive personal finance management application built with Angular 20+ and modern web technologies._
 
-Welcome to **Spending Tracker** – your chill, modern, and mobile-friendly way to keep tabs on your expenses! 😎💸
+Welcome to **Spend Tracker** – your comprehensive, modern, and mobile-friendly personal finance management solution! Track expenses, manage income, monitor financial health, and gain valuable insights into your spending patterns. 😎💸
 
-## 🚀 Features
+## 🌟 Key Features
 
-- **Dark & Light Mode** – Switch themes anytime, your eyes will thank you!
-- **Mobile-First & Responsive** – Looks great on your phone, tablet, or desktop.
-- **Sidebar Navigation** – Jump between Dashboard, Add Expense, and Data Import/Export with ease.
-- **Smart Category Memory** – Categories you use are remembered and suggested next time.
-- **Import/Export Data** – Backup or move your data with a click.
-- **Real-Time Updates** – No more page refreshes, everything updates instantly.
-- **Prominent Totals** – See your total spend for the month, front and center.
+- **📊 Financial Dashboard** - Comprehensive overview of your financial health
+- **💰 Expense Tracking** - Record and categorize all your expenses
+- **💵 Income Management** - Track multiple income sources
+- **📈 Financial Insights** - Get spending analysis and financial health ratings
+- **🤝 Lending Records** - Track money lent and borrowed
+- **🧮 Split Calculator** - Calculate shared expenses with friends and family
+- **📁 Data Import/Export** - Backup and restore your financial data
+- **🌙 Dark & Light Mode** - Switch themes for comfortable viewing
+- **📱 Mobile-First Design** - Optimized for all devices
+- **⚡ Real-Time Updates** - Instant data synchronization
 
-## 🛠️ Getting Started
+## 🚀 Getting Started
 
 1. **Install dependencies:**
    ```bash
    npm install
    ```
+
 2. **Run the app locally:**
    ```bash
    npm start
    ```
+
 3. **Open in your browser:**
    [http://localhost:4200](http://localhost:4200)
 
-## 📝 Usage Tips
+4. **Build for production:**
+   ```bash
+   npm run build
+   ```
 
-- **Add Expenses:** Use the sidebar to add new expenses. Categories you use are saved for next time!
-- **Dashboard:** See your monthly totals and all your expenses, grouped by category.
-- **Switch Theme:** Use the sun/moon button in the top bar to toggle dark/light mode.
-- **Import/Export:** Use the Data Import/Export page to backup or restore your data.
-- **Mobile?** No problem! The sidebar collapses and the UI adapts for small screens.
+## 📝 Usage Guide
 
-## 💡 Tech Stack
-- Angular 20+
-- Bootstrap 5
-- RxJS
+### Dashboard
+- View your monthly spending summary
+- Monitor financial health indicators
+- Track total expenses and income
+- Access quick insights and analytics
 
-## 👨‍🍳 Made with care by a chill dev (and a little help from AI)!
+### Adding Expenses
+- Use the sidebar navigation to add new expenses
+- Categories are automatically remembered and suggested
+- Add detailed descriptions and amounts
+- Set expense dates and categories
 
-Enjoy tracking your spending – and don’t forget to treat yourself once in a while! 🍦
+### Income Management
+- Record multiple income sources
+- Track salary, freelance, and other earnings
+- Monitor income vs. expenses ratio
+- Get financial health insights
+
+### Lending & Borrowing
+- Track money lent to others
+- Record money borrowed
+- Monitor repayment status
+- Calculate outstanding amounts
+
+### Split Calculator
+- Calculate shared expenses
+- Split bills with friends and family
+- Track group expenses
+- Generate expense reports
+
+### Data Management
+- Import data from other applications
+- Export your financial data
+- Backup and restore information
+- Maintain data integrity
+
+## 🛠️ Tech Stack
+
+- **Frontend Framework:** Angular 20+
+- **UI Library:** Bootstrap 5
+- **Icons:** Bootstrap Icons
+- **State Management:** RxJS
+- **Build Tool:** Angular CLI
+- **Styling:** CSS3 with CSS Variables
+- **PWA Support:** Web App Manifest
+
+## 🔧 Development
+
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
+- Angular CLI
+
+### Project Structure
+```
+src/
+├── app/
+│   ├── components/          # Feature components
+│   ├── services/           # Business logic services
+│   ├── models/            # Data models
+│   ├── guards/            # Route guards
+│   └── routes.ts          # Application routes
+├── assets/               # Static assets
+└── styles.css           # Global styles
+```
+
+### Available Scripts
+- `npm start` - Start development server
+- `npm run build` - Build for production
+- `npm run test` - Run unit tests
+- `npm run coverage` - Run tests with coverage
+
+## 🌐 SEO & Performance
+
+This application is optimized for search engines and performance:
+
+- **Meta Tags:** Comprehensive meta tags for social sharing
+- **Structured Data:** JSON-LD structured data for search engines
+- **Sitemap:** XML sitemap for better crawling
+- **Robots.txt:** Search engine crawling instructions
+- **PWA Manifest:** Progressive Web App capabilities
+- **Performance:** Optimized bundle sizes and loading
+- **Accessibility:** Screen reader support and ARIA labels
+
+## 📱 Progressive Web App
+
+Spend Tracker is a Progressive Web App (PWA) that can be:
+- Installed on mobile devices
+- Used offline (with cached data)
+- Added to home screen
+- Accessed like a native app
+
+## 🎨 Theming
+
+The application supports both light and dark themes:
+- Automatic theme detection based on system preferences
+- Manual theme switching
+- Persistent theme selection
+- Smooth transitions between themes
+
+## 📊 Financial Insights
+
+Get valuable insights into your spending:
+- Monthly spending patterns
+- Category-wise expense analysis
+- Income vs. expense ratios
+- Financial health ratings
+- Spending trend analysis
+
+## 🔒 Data Privacy
+
+- All data is stored locally in your browser
+- No data is sent to external servers
+- Complete control over your financial information
+- Easy data export and backup options
+
+## 🚀 Deployment
+
+The application is deployed on Netlify and can be accessed at:
+**https://devk-spend-tracker.netlify.app/**
+
+### Deployment Features
+- Automatic builds from Git
+- CDN distribution
+- HTTPS enabled
+- Custom domain support
+- Performance optimizations
+
+## 🤝 Contributing
+
+This is a personal project, but suggestions and feedback are welcome!
+
+## 📄 License
+
+This project is open source and available under the MIT License.
+
+## 👨‍💻 Author
+
+Built with ❤️ by a developer who wanted a better way to track personal finances.
+
+---
+
+**Enjoy managing your finances with Spend Tracker!** 💰✨
