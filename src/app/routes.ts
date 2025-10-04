@@ -25,5 +25,9 @@ export const routes: Routes = [
   {
     path: 'lending',
     loadComponent: () => import('./components/lending/lending.component').then(m => m.LendingComponent)
+  },
+  {
+    path: 'income',
+    loadComponent: () => import('./components/income/income.component').then(m => m.IncomeComponent)
   }
 ]; 

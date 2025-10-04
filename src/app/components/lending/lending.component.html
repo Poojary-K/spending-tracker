@@ -1,40 +1,11 @@
 <div class="lending-container">
-  <div class="header">
-    <button class="back-btn" (click)="goToDashboard()">
-      <i class="bi bi-arrow-left"></i> Back to Dashboard
-    </button>
-    <h1>Lending & Borrowing</h1>
-  </div>
-
-  <!-- Summary Cards -->
-  <div class="summary-cards-compact">
-    <div class="summary-item lent">
-      <i class="bi bi-arrow-up-circle"></i>
-      <span class="label">Lent</span>
-      <span class="amount">₹{{ getTotalLent() | number:'1.2-2' }}</span>
-    </div>
-
-    <div class="summary-item borrowed">
-      <i class="bi bi-arrow-down-circle"></i>
-      <span class="label">Borrowed</span>
-      <span class="amount">₹{{ getTotalBorrowed() | number:'1.2-2' }}</span>
-    </div>
-
-    <div class="summary-item net" [class.positive]="getNetLending() >= 0" [class.negative]="getNetLending() < 0">
-      <i class="bi bi-balance-scale"></i>
-      <span class="label">Net</span>
-      <span class="amount">₹{{ getNetLending() | number:'1.2-2' }}</span>
-    </div>
-  </div>
-
-  <!-- Add New Lending Button -->
-  <div class="add-section">
-    <button class="add-btn" (click)="openAddModal(addLendingModal)">
-      <i class="bi bi-plus-circle"></i>
-      Add New Lending/Borrowing
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Lending & Borrowing</h3>
+    <button class="btn btn-outline-secondary" (click)="goToDashboard()" title="Back to Dashboard">
+      <i class="bi bi-arrow-left"></i>
     </button>
   </div>
-
+  <hr>
 
   <!-- Active Lendings -->
   <div class="lendings-section" *ngIf="getActiveLendings().length > 0">
@@ -123,12 +94,13 @@
     </div>
     <h3>No Lendings or Borrowings Yet</h3>
     <p>Start tracking your money lending and borrowing activities.</p>
-    <button class="add-btn" (click)="openAddModal(addLendingModal)">
-      <i class="bi bi-plus-circle"></i>
-      Add Your First Lending
-    </button>
   </div>
 </div>
+
+<!-- Floating Action Button -->
+<button class="btn btn-primary rounded-circle fab" (click)="openAddModal(addLendingModal)" aria-label="Add Lending">
+  <i class="bi bi-plus-lg"></i>
+</button>
 
 <!-- Add Lending Modal -->
 <ng-template #addLendingModal let-modal>

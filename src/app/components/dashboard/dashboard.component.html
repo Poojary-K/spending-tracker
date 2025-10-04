@@ -41,6 +41,33 @@
           </div>
         </div>
       </div>
+
+      <!-- Financial Insights Card -->
+      <div class="carousel-card financial-insights" *ngIf="getMonthlyIncome() > 0">
+        <div class="card-content">
+          <i class="bi bi-graph-up-arrow cash-icon"></i>
+          <div class="card-text">
+            <div class="card-label">Financial Health</div>
+            <div class="insights-content">
+              <div class="insight-row">
+                <span class="insight-label">Spent:</span>
+                <span class="insight-value" [style.color]="getFinancialInsight().color">
+                  {{ getFinancialInsight().spendingPercentage }}%
+                </span>
+              </div>
+              <div class="insight-row">
+                <span class="insight-label">Remaining:</span>
+                <span class="insight-value" [style.color]="getFinancialInsight().color">
+                  ₹{{ getFinancialInsight().remainingAmount | number:'1.2-2' }}
+                </span>
+              </div>
+              <div class="rating-badge" [style.background-color]="getFinancialInsight().color">
+                {{ getFinancialInsight().rating | titlecase }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   
@@ -61,10 +88,14 @@
   </div>
 </div>
 <div class="form-group">
-  <label>Select Month:</label>
-  <select class="form-select" [(ngModel)]="selectedMonth">
-    <option *ngFor="let m of months" [value]="m">{{ m }}</option>
-  </select>
+  <div class="row">
+    <div class="col-md-6">
+      <label>Select Month:</label>
+      <select class="form-select" [(ngModel)]="selectedMonth">
+        <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+      </select>
+    </div>
+  </div>
 </div>
 
 <app-expense-list [month]="selectedMonth"></app-expense-list>

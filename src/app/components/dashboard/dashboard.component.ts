@@ -2,9 +2,11 @@ import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ExpenseService } from '../../services/expense.service';
 import { LendingService } from '../../services/lending.service';
+import { IncomeService } from '../../services/income.service';
 import { SharedModule } from '../../shared.module';
 import { ExpenseListComponent } from '../expense-list/expense-list.component';
 import { Lending } from '../../models/lending.model';
+import { FinancialInsight } from '../../models/income.model';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -24,7 +26,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     public service: ExpenseService,
-    public lendingService: LendingService
+    public lendingService: LendingService,
+    public incomeService: IncomeService
   ) {
     const currentMonth = new Date().toISOString().slice(0, 7); // "YYYY-MM"
 
@@ -152,11 +155,56 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Gets financial insights for the selected month.
+   */
+  getFinancialInsight(): FinancialInsight {
+    const totalExpenses = this.total(this.selectedMonth);
+    return this.incomeService.calculateFinancialInsight(this.selectedMonth, totalExpenses);
+  }
+
+  /**
+   * Gets monthly income for the selected month.
+   * Falls back to universal income if no month-specific income is set.
+   */
+  getMonthlyIncome(): number {
+    const monthIncome = this.incomeService.getMonthlyIncome(this.selectedMonth);
+    if (monthIncome > 0) {
+      return monthIncome;
+    }
+    // Fall back to universal income
+    const universalIncome = this.incomeService.getUniversalIncome();
+    if (universalIncome > 0) {
+      // Set the universal income for this month if it doesn't exist
+      this.incomeService.setMonthlyIncome(this.selectedMonth, universalIncome);
+      return universalIncome;
+    }
+    return 0;
+  }
+
+  /**
+   * Sets monthly income for the selected month.
+   */
+  setMonthlyIncome(amount: number): void {
+    this.incomeService.setMonthlyIncome(this.selectedMonth, amount);
+  }
+
+  /**
+   * Sets universal income that applies to all months.
+   */
+  setUniversalIncome(amount: number): void {
+    this.incomeService.setUniversalIncome(amount);
+  }
+
   // Carousel methods
   getTotalCards(): number {
     let total = 1; // Always have total spend card
     if (this.activeLendings.length > 0) {
       total += 2; // Add lent and borrowed cards
+    }
+    // Add financial insights card if income is set
+    if (this.getMonthlyIncome() > 0) {
+      total += 1;
     }
     return total;
   }

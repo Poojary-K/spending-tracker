@@ -18,7 +18,7 @@ export class LendingService {
   private data$ = new BehaviorSubject<LendingData>(this.load());
 
   constructor() {
-    this.data = this.data$.value;
+    this.data = this.load();
   }
 
   /**
@@ -41,19 +41,19 @@ export class LendingService {
   }
 
   getAllLendings(): Lending[] {
-    return [...this.data.lendings];
+    return [...(this.data?.lendings || [])];
   }
 
   getActiveLendings(): Lending[] {
-    return this.data.lendings.filter(l => l.status === 'active');
+    return this.data?.lendings?.filter(l => l.status === 'active') || [];
   }
 
   getLentToOthers(): Lending[] {
-    return this.data.lendings.filter(l => l.type === 'lent' && l.status === 'active');
+    return this.data?.lendings?.filter(l => l.type === 'lent' && l.status === 'active') || [];
   }
 
   getBorrowedFromOthers(): Lending[] {
-    return this.data.lendings.filter(l => l.type === 'borrowed' && l.status === 'active');
+    return this.data?.lendings?.filter(l => l.type === 'borrowed' && l.status === 'active') || [];
   }
 
   addLending(lending: Omit<Lending, 'id'>): void {
@@ -62,11 +62,21 @@ export class LendingService {
       id: this.generateId()
     };
     
+    // Ensure lendings array exists
+    if (!this.data.lendings) {
+      this.data.lendings = [];
+    }
+    
     this.data.lendings.push(newLending);
     this.saveAndEmit();
   }
 
   updateLending(updated: Lending): void {
+    // Ensure lendings array exists
+    if (!this.data.lendings) {
+      this.data.lendings = [];
+    }
+    
     const index = this.data.lendings.findIndex(l => l.id === updated.id);
     if (index !== -1) {
       this.data.lendings[index] = updated;
@@ -75,11 +85,21 @@ export class LendingService {
   }
 
   deleteLending(id: string): void {
+    // Ensure lendings array exists
+    if (!this.data.lendings) {
+      this.data.lendings = [];
+    }
+    
     this.data.lendings = this.data.lendings.filter(l => l.id !== id);
     this.saveAndEmit();
   }
 
   markAsRepaid(id: string, repaymentDate?: string): void {
+    // Ensure lendings array exists
+    if (!this.data.lendings) {
+      this.data.lendings = [];
+    }
+    
     const lending = this.data.lendings.find(l => l.id === id);
     if (lending) {
       lending.status = 'repaid';

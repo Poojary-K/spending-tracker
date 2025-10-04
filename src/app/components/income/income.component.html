@@ -1,0 +1,76 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>Income Management</h3>
+        <button class="btn btn-outline-secondary" (click)="goBack()" title="Back to Dashboard">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+      </div>
+      <hr>
+
+      <!-- Month Selection -->
+      <div class="form-group mb-4">
+        <label for="monthSelect" class="form-label">Select Month:</label>
+        <select id="monthSelect" class="form-select" [(ngModel)]="selectedMonth">
+          <option *ngFor="let m of months" [value]="m">{{ getMonthName(m) }}</option>
+        </select>
+      </div>
+
+      <!-- Income Input Form -->
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Monthly Income for {{ getMonthName(selectedMonth) }}</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="incomeAmount" class="form-label">Monthly Income (₹)</label>
+                <input 
+                  type="number" 
+                  id="incomeAmount"
+                  class="form-control" 
+                  [(ngModel)]="monthlyIncome"
+                  placeholder="Enter your monthly income"
+                  min="0"
+                  step="0.01"
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex gap-2 mt-4">
+                <button 
+                  class="btn btn-primary" 
+                  (click)="saveIncome()"
+                  [disabled]="monthlyIncome < 0"
+                >
+                  <i class="bi bi-check-lg"></i> Save Income
+                </button>
+                <button 
+                  class="btn btn-danger" 
+                  (click)="deleteIncome()"
+                  [disabled]="monthlyIncome === 0"
+                >
+                  <i class="bi bi-trash"></i> Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<!-- Floating Action Button - Only show when no income is set -->
+<button 
+  class="btn btn-primary rounded-circle fab" 
+  (click)="addIncome()" 
+  aria-label="Add Income"
+  *ngIf="monthlyIncome === 0"
+>
+  <i class="bi bi-plus-lg"></i>
+</button>

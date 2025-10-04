@@ -1,5 +1,20 @@
 [
   {
+    "version": "1.6.0",
+    "title": "💰 Income Management & Financial Insights",
+    "changes": [
+      "🆕 Brand new Income Management section to set and track your monthly income",
+      "📊 Smart financial insights showing spending percentage, remaining amount, and financial health status",
+      "📅 Month-by-month income tracking with easy month selection dropdown",
+      "💡 Universal income setting - set once and apply to all months automatically",
+      "🎯 Real-time calculations showing how much you've spent vs. how much you have left",
+      "📈 Enhanced dashboard with income-aware financial health indicators",
+      "🌙 Complete dark/light theme support with dynamic card colors that adapt to your theme",
+      "💾 Income data included in export/import for complete financial tracking",
+      "🔧 Fixed lending service bugs for smoother money tracking experience"
+    ]
+  },
+  {
     "version": "1.5.0",
     "title": "💰 Lending & Borrowing Management",
     "changes": [

@@ -40,6 +40,11 @@ import { CommonModule } from '@angular/common';
               <i class="bi bi-wallet2 me-2"></i> Lending & Borrowing
             </a>
           </li>
+          <li class="nav-item mb-2">
+            <a class="nav-link" routerLink="/income" routerLinkActive="active" (click)="close.emit()">
+              <i class="bi bi-cash-stack me-2"></i> Income Management
+            </a>
+          </li>
         </ul>
       </div>
     </nav>
